@@ -8,12 +8,15 @@ import { AuthService } from 'src/auth/auth.service';
 import { AddSomeoneToTaskInput } from './dto/AddSomeoneTask.input';
 import { AddNoteInput } from './dto/add-note-task.input';
 
+import { TaskRedisService } from './task.redis.service';
+import { Socket } from 'socket.io';
+
 @Injectable()
 export class TaskService {
 
   constructor(@InjectModel(Task.name)
    private taskModel:Model<TaskDocument>,
-   private authService: AuthService ){
+   private authService: AuthService ,private taskRedis: TaskRedisService ){
 
   }
 
@@ -30,7 +33,16 @@ export class TaskService {
 
   }
   create(createTaskInput: CreateTaskInput) {
+    
     const task = new this.taskModel(createTaskInput);
+
+    const { name, description, properity } = createTaskInput;
+
+    const eventBody = { name, description, properity };
+
+    this.taskRedis.publish(createTaskInput.creator , eventBody);
+    
+    
 
     return task.save();
   } 
@@ -47,8 +59,23 @@ export class TaskService {
   }
 
 
-  findAll() {
-    return `This action returns all task`;
+
+
+  async findAllWhosTheAuthor(name: string, creator: string) {
+
+    const tasks = await this.taskModel.find({creator: creator});
+
+    const events = tasks.reduce((acc, task) => {
+      const filteredEvents = task.Auths.filter(auth => auth.name === name);
+      return [...acc, ...filteredEvents];
+   }, []);
+
+   return events;
+
+
+
+
+    
   }
 
   findOne(name: string) {

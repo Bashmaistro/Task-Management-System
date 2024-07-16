@@ -25,6 +25,7 @@ export class TaskResolver {
   addNote(@Args('addNote') addNote: AddNoteInput){
     return this.taskService.addNote(addNote)
   }
+  
 
    
 
@@ -33,10 +34,7 @@ export class TaskResolver {
     return this.taskService.create(createTaskInput);
   }
 
-  @Query(() => [Task], { name: 'task' })
-  findAll() {
-    return this.taskService.findAll();
-  }
+ 
 
 
   @Mutation(() => Task)

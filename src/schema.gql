@@ -1,0 +1,72 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  _id: String!
+  name: String!
+  email: String!
+  password: String!
+}
+
+type Task {
+  _id: String!
+  name: String!
+  description: String!
+  properity: Priority!
+  Auths: [Auth!]!
+  notes: [String!]!
+}
+
+enum Priority {
+  HIGH
+  NORMAL
+  LOW
+}
+
+type Query {
+  auth(id: Int!): Auth!
+  task: [Task!]!
+}
+
+type Mutation {
+  createAuth(createAuthInput: CreateAuthInput!): Auth!
+  removeAuth(id: Int!): Auth!
+  addSomeoneToTheTask(addSomeoneToTheTask: AddSomeoneToTaskInput!): Task!
+  addNote(addNote: AddNoteInput!): Task!
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: Int!): Task!
+}
+
+input CreateAuthInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input AddSomeoneToTaskInput {
+  email: String!
+  name: String!
+}
+
+input AddNoteInput {
+  note: String!
+  name: String!
+}
+
+input CreateTaskInput {
+  name: String!
+  description: String!
+  properity: Priority!
+  Auths: [CreateAuthInput!]
+  notes: [String!]
+}
+
+input UpdateTaskInput {
+  name: String
+  description: String
+  properity: Priority
+  Auths: [CreateAuthInput!]
+  notes: [String!]
+}

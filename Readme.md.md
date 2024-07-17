@@ -1,28 +1,27 @@
-- **User Login**
-- https://github.com/Bashmaistro/Task-Management-System/blob/main/img/Pasted%20image%2020240717093200.png
-
+- **User Login** 
+![](Pasted%20image%2020240717114805.png)
 
 - **User Create**
- ![[Pasted image 20240717094658.png]]
+ ![](Pasted%20image%2020240717094658.png)
 
 - **EventCreate**
 
-![[Pasted image 20240717100951.png]]
-![[Pasted image 20240717100939.png]]
+![](Pasted%20image%2020240717100951.png)
+![](Pasted%20image%2020240717100939.png)
 
 - **Add Someone to The Event**
-![[Pasted image 20240717101459.png]]
+![](Pasted%20image%2020240717101459.png)
 
 - **Adding Notes**
-![[Pasted image 20240717101710.png]]
+![](Pasted%20image%2020240717101710.png)
 
 - **Changing Priority**
-![[Pasted image 20240717101948.png]]
+![](Pasted%20image%2020240717101948.png)
 
 - **Showing Task**
-![[Pasted image 20240717111658.png]]
+![](Pasted%20image%2020240717111658.png)
 
 - **Subscribing for Events and Request**
-![[Pasted image 20240717112656.png]]
-![[Pasted image 20240717112717.png]]
-![[Pasted image 20240717112911.png]]
+![](Pasted%20image%2020240717112656.png)
+![](Pasted%20image%2020240717112717.png)
+![](Pasted%20image%2020240717112911.png)

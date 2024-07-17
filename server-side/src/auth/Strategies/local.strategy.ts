@@ -21,11 +21,8 @@ export class LocalStrategy extends PassportStrategy(Strategy){
         newAuth.email = username;
         newAuth.password = password
 
-        
         const user = await this.authServicer.validate(newAuth);
-        
-        
-
+       
         if(!user){
             throw new UnauthorizedException();
             

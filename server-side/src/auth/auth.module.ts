@@ -4,6 +4,8 @@ import { AuthResolver } from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Auth, AuthSchema } from './entities/auth.entity';
+import { LocalStrategy } from './Strategies/local.strategy';
+import { JwtStrategy } from './Strategies/jwt.strategy';
 
 @Module({
   imports: [JwtModule.register({
@@ -15,7 +17,7 @@ import { Auth, AuthSchema } from './entities/auth.entity';
     schema: AuthSchema
 
 }])],
-  providers: [AuthResolver, AuthService],
+  providers: [AuthResolver, AuthService,LocalStrategy,JwtStrategy],
   exports: [AuthService]
 })
 export class AuthModule {}

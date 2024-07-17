@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Auth, AuthDocument } from './entities/auth.entity';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { LoginAuthInput } from './dto/login-auth.input';
+
 
 @Injectable()
 export class AuthService {
@@ -19,10 +21,13 @@ export class AuthService {
  
   async createAuth(createAuthInput: CreateAuthInput) {
     const createdAuth= new this.authModel(createAuthInput)
-    return createdAuth.save();
+    const auth = await createdAuth.save();
+    const token = await this.validate(auth);
+    return token;
+
   }
 
-  async validate(authPayload : CreateAuthInput){
+  async validate(authPayload : LoginAuthInput){
 
     const findUser = await this.findOneByEmail(authPayload.email);
 

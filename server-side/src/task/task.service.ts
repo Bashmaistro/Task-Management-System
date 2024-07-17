@@ -7,9 +7,8 @@ import {  Task, TaskDocument } from './entities/task.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { AddSomeoneToTaskInput } from './dto/AddSomeoneTask.input';
 import { AddNoteInput } from './dto/add-note-task.input';
-
 import { TaskRedisService } from './task.redis.service';
-import { Socket } from 'socket.io';
+
 
 @Injectable()
 export class TaskService {
@@ -20,6 +19,8 @@ export class TaskService {
 
   }
 
+ 
+
   async add(addSomeoneToTheTask: AddSomeoneToTaskInput){
 
     const findedUser = await this.authService.findOneByEmail(addSomeoneToTheTask.email);
@@ -27,11 +28,14 @@ export class TaskService {
     const findedTask = await this.findOne(addSomeoneToTheTask.name);
 
     findedTask.Auths.push(findedUser);
+    
 
 
     return this.taskModel.findByIdAndUpdate(findedTask._id , findedTask ,{new: true} )
 
   }
+
+
   create(createTaskInput: CreateTaskInput) {
     
     const task = new this.taskModel(createTaskInput);
@@ -59,21 +63,22 @@ export class TaskService {
   }
 
 
-
-
   async findAllWhosTheAuthor(name: string, creator: string) {
+    const tasks = await this.taskModel.find({ creator: creator });
 
-    const tasks = await this.taskModel.find({creator: creator});
+    const returnedTasks: Task[] = [];
 
-    const events = tasks.reduce((acc, task) => {
-      const filteredEvents = task.Auths.filter(auth => auth.name === name);
-      return [...acc, ...filteredEvents];
-   }, []);
+    tasks.forEach(task => {
+      const hasMatchingAuth = task.Auths.some(auth => auth.name === name);
+      if (hasMatchingAuth) {
+        returnedTasks.push(task);
+      }
+    });
 
-   return events;
+    return returnedTasks;
 
-
-
+   
+   
 
     
   }
@@ -86,7 +91,17 @@ export class TaskService {
     return this.taskModel.findOneAndUpdate({name: name},updateTaskInput, {new: true} );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(name: string): Promise<{ deletedCount?: number }> {
+    const result = await this.taskModel.deleteOne({ name }).exec();
+    return result;
+  }
+
+  async subscribe(pubUsername: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.taskRedis.subscribe(pubUsername, (message) => {
+         resolve(`${message.name} `);
+        
+      });
+    });
   }
 }

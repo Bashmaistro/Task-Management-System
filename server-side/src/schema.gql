@@ -30,17 +30,25 @@ type Query {
 }
 
 type Mutation {
-  createAuth(createAuthInput: CreateAuthInput!): Auth!
+  createAuth(createAuthInput: CreateAuthInput!): String!
+  login(loginAuthInput: LoginAuthInput!): String!
   removeAuth(id: Int!): Auth!
   addSomeoneToTheTask(addSomeoneToTheTask: AddSomeoneToTaskInput!): Task!
   addNote(addNote: AddNoteInput!): Task!
+  showTask(name: String!): [Task!]!
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  removeTask(id: Int!): Task!
+  removeTask(name: String!): Task!
+  subscribe(pubUsername: String!): String!
 }
 
 input CreateAuthInput {
   name: String!
+  email: String!
+  password: String!
+}
+
+input LoginAuthInput {
   email: String!
   password: String!
 }

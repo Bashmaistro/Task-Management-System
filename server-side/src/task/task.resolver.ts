@@ -15,7 +15,6 @@ export class TaskResolver {
 
 
 
-
   //Add someone to the Task
   @Mutation(() => Task)
   @UseGuards(JwtAuthGuard)
@@ -38,23 +37,17 @@ export class TaskResolver {
     if (!req || !req.user) {
       throw new Error('User not authenticated');
     }
-
     const events = await this.taskService.findAllWhosTheAuthor(req.user.name, name);
-    
-    
+  
     return events
   }
 
-   
 
   @Mutation(() => Task)
   @UseGuards(JwtAuthGuard)
   createTask(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
     return this.taskService.create(createTaskInput);
   }
-
- 
-
 
   @Mutation(() => Task)
   updateTask(@Args('updateTaskInput') updateTaskInput: UpdateTaskInput) {
